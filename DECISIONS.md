@@ -21,6 +21,8 @@ _Why did you structure your state the way you did? Which patterns did you choose
 - I refactored the App.tsx file to improve readability and debugging. I created a custom hook to centralize the logic and exported only the necessary parts. I also broke the UI into smaller components to make the code easier to understand.
 - Added TanStack Query because the API was slow and flaky. Implemented caching to provide a better user experience.
 
+- Implemented debouncing to prevent API calls on every keystroke in the search bar. Since the API was slow and flaky, this significantly improved performance and user experience. Also enabled caching so repeated searches are served from cache without additional API calls.
+
 ## 2. Trade-offs and Omissions
 
 _What did you intentionally leave out given the constraints of a take-home assignment? If you had more time, what would you prioritize next?_

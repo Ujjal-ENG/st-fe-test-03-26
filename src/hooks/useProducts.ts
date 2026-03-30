@@ -1,25 +1,33 @@
 import { useQuery } from "@tanstack/react-query";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { api } from "../services/api";
+
+function useDebounce<T>(value: T, delay = 400): T {
+  const [debounced, setDebounced] = useState(value);
+  useEffect(() => {
+    const id = setTimeout(() => setDebounced(value), delay);
+    return () => clearTimeout(id);
+  }, [value, delay]);
+  return debounced;
+}
 
 const LIMIT = 12;
 
 export function useProducts() {
   const [page, setPage] = useState(1);
   const [category, setCategory] = useState("");
-  const [search, setSearch] = useState("");
   const [searchInput, setSearchInput] = useState("");
+  const debouncedSearch = useDebounce(searchInput);
 
   const { data, isFetching, isError, error, refetch } = useQuery({
-    queryKey: ["products", page, category, search],
+    queryKey: ["products", page, category, debouncedSearch],
     queryFn: () =>
       api.fetchProducts({
         page,
         limit: LIMIT,
         category: category || undefined,
-        search: search || undefined,
+        search: debouncedSearch || undefined,
       }),
-
     placeholderData: (prev) => prev,
   });
 
@@ -28,14 +36,11 @@ export function useProducts() {
     setPage(1);
   };
 
-  const handleSearchSubmit = () => {
-    setSearch(searchInput);
-    setPage(1);
-  };
+  // Kept for backwards compatibility — debounce fires automatically now
+  const handleSearchSubmit = () => setPage(1);
 
   const handleClearSearch = () => {
     setSearchInput("");
-    setSearch("");
     setPage(1);
   };
 
@@ -60,7 +65,10 @@ export function useProducts() {
     startItem,
     endItem,
     setPage,
-    setSearchInput: (val: string) => setSearchInput(val),
+    setSearchInput: (val: string) => {
+      setSearchInput(val);
+      setPage(1);
+    },
     handleCategoryChange,
     handleSearchSubmit,
     handleClearSearch,
