@@ -6,7 +6,7 @@ Please use this file to briefly outline your technical choices and the rationale
 
 _Why did you structure your state the way you did? Which patterns did you choose for handling the flaky API requests, loading states, and error handling?_
 
-_(Your answer here)_
+- For the first step i have to make the product card with proper skelton based on the figma design you have to provide, for rendering it i used mock data.
 
 ## 2. Trade-offs and Omissions
 
@@ -17,6 +17,8 @@ _(Your answer here)_
 ## 3. AI Usage
 
 _How did you utilize AI tools (ChatGPT, Copilot, Cursor, etc.) during this assignment? Provide a brief summary of how they assisted you._
+
+- For codding editor i used vs code, for AI use both **Claude and ChatGPT**, for designing and repetitive work. I just told to the AI this way you have to make this architecture than i reviewed one by one to the code after complete the task
 
 I used the free Kilo Code tool and the Gemini command-line tool to help generate commit messages during the assignment.
 
