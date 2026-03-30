@@ -19,6 +19,7 @@ _Why did you structure your state the way you did? Which patterns did you choose
 
 - Also handle the empty state and when product loading is failed
 - I refactored the App.tsx file to improve readability and debugging. I created a custom hook to centralize the logic and exported only the necessary parts. I also broke the UI into smaller components to make the code easier to understand.
+- Added TanStack Query because the API was slow and flaky. Implemented caching to provide a better user experience.
 
 ## 2. Trade-offs and Omissions
 

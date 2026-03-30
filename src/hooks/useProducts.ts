@@ -1,43 +1,27 @@
-import { useState, useEffect, useCallback } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { useState } from "react";
 import { api } from "../services/api";
-import type { Product } from "../types/product";
 
 const LIMIT = 12;
 
 export function useProducts() {
-  const [products, setProducts] = useState<Product[]>([]);
-  const [total, setTotal] = useState(0);
-  const [totalPages, setTotalPages] = useState(0);
   const [page, setPage] = useState(1);
   const [category, setCategory] = useState("");
   const [search, setSearch] = useState("");
   const [searchInput, setSearchInput] = useState("");
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
 
-  const fetchData = useCallback(async (pg: number, cat: string, q: string) => {
-    setLoading(true);
-    setError(null);
-    try {
-      const res = await api.fetchProducts({
-        page: pg,
+  const { data, isFetching, isError, error, refetch } = useQuery({
+    queryKey: ["products", page, category, search],
+    queryFn: () =>
+      api.fetchProducts({
+        page,
         limit: LIMIT,
-        category: cat || undefined,
-        search: q || undefined,
-      });
-      setProducts(res.data);
-      setTotal(res.total);
-      setTotalPages(res.totalPages);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Something went wrong.");
-    } finally {
-      setLoading(false);
-    }
-  }, []);
+        category: category || undefined,
+        search: search || undefined,
+      }),
 
-  useEffect(() => {
-    fetchData(page, category, search);
-  }, [page, category, search, fetchData]);
+    placeholderData: (prev) => prev,
+  });
 
   const handleCategoryChange = (cat: string) => {
     setCategory(cat);
@@ -55,15 +39,19 @@ export function useProducts() {
     setPage(1);
   };
 
-  const retry = () => fetchData(page, category, search);
-
+  const total = data?.total ?? 0;
+  const totalPages = data?.totalPages ?? 0;
   const startItem = (page - 1) * LIMIT + 1;
   const endItem = Math.min(page * LIMIT, total);
 
   return {
-    products,
-    loading,
-    error,
+    products: data?.data ?? [],
+    loading: isFetching,
+    error: isError
+      ? error instanceof Error
+        ? error.message
+        : "Something went wrong."
+      : null,
     page,
     total,
     totalPages,
@@ -76,6 +64,6 @@ export function useProducts() {
     handleCategoryChange,
     handleSearchSubmit,
     handleClearSearch,
-    retry,
+    retry: refetch,
   };
 }
