@@ -8,11 +8,20 @@ _Why did you structure your state the way you did? Which patterns did you choose
 
 - For the first step i have to make the product card with proper skelton based on the figma design you have to provide, for rendering it i used mock data.
 
+- Refactor the Product Card with skeleton and Now for initial loading i have to show the 12 skeletons for better user experience than the real products appear.
+- Since the api.ts mentioned there is category filter thats why i add it all in the app.tsx for category wise filter
+
+- useCallback on fetchData prevents a new function reference on every render, keeping the useEffect dependency array stable and avoiding duplicate API calls.
+
+- since you are mentioned it is a **Flaky API Handling** thats why i wrapped the fetch call in try/catch block. if api call is failed than shown the error banner will nice message
+
+- Also api.ts there products count set 154, so that i have to need the pagination, for every changes also need the trigger product skeleton for better user experience
+
+- Also handle the empty state and when product loading is failed
+
 ## 2. Trade-offs and Omissions
 
 _What did you intentionally leave out given the constraints of a take-home assignment? If you had more time, what would you prioritize next?_
-
-_(Your answer here)_
 
 ## 3. AI Usage
 

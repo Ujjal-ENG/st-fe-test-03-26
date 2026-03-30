@@ -1,19 +1,28 @@
+import { useState } from 'react';
 import type { Product } from '../types/product';
 
 interface ProductCardProps {
   product: Product;
 }
 
+const FALLBACK_IMAGE = 'https://placehold.co/400x400/f3f4f6/9ca3af?text=No+Image';
+
 export default function ProductCard({ product }: ProductCardProps) {
+  const [imgSrc, setImgSrc] = useState(product.imageUrl);
+
   return (
-    <div className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-200 cursor-pointer">
+    <article
+      className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-200 cursor-pointer"
+      aria-label={`${product.name}, ${product.category}, ৳${product.price.toLocaleString()}`}
+    >
       {/* Image */}
       <div className="bg-gray-100 aspect-square w-full overflow-hidden">
         <img
-          src={product.imageUrl}
+          src={imgSrc}
           alt={product.name}
           className="w-full h-full object-cover"
           loading="lazy"
+          onError={() => setImgSrc(FALLBACK_IMAGE)}
         />
       </div>
 
@@ -28,10 +37,10 @@ export default function ProductCard({ product }: ProductCardProps) {
         </h3>
 
         {/* Price */}
-        <p className="text-lg font-semibold text-cyan-500">
+        <p className="text-lg font-semibold text-cyan-500" aria-label={`Price: ৳${product.price.toLocaleString()}`}>
           ৳ {product.price.toLocaleString()}
         </p>
       </div>
-    </div>
+    </article>
   );
 }
