@@ -18,6 +18,7 @@ _Why did you structure your state the way you did? Which patterns did you choose
 - Also api.ts there products count set 154, so that i have to need the pagination, for every changes also need the trigger product skeleton for better user experience
 
 - Also handle the empty state and when product loading is failed
+- I refactored the App.tsx file to improve readability and debugging. I created a custom hook to centralize the logic and exported only the necessary parts. I also broke the UI into smaller components to make the code easier to understand.
 
 ## 2. Trade-offs and Omissions
 
