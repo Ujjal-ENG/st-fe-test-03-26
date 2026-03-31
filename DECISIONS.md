@@ -56,4 +56,12 @@ _How did you utilize AI tools (ChatGPT, Copilot, Cursor, etc.) during this assig
 
 _Did you notice any edge cases or bugs that you didn't have time to fix? Please list them here._
 
-_(Your answer here)_
+- One edge case is the search button and Enter key behavior. Search is already working with debounce, so clicking Search or pressing Enter does not make the result come instantly. If user is already on page 1, it may feel like the button is not doing anything.
+
+- If the API fails after some data was already loaded before, right now I show only the error banner and hide the old product list. A better experience could be keeping the old data visible and showing a smaller error message on top.
+
+- The category list is hard coded in the frontend. If backend data changes later and a new category comes, the filter dropdown will not update automatically.
+
+- The page, search text, and category state are not saved in the URL. So if user refreshes the page, all selected state will be lost and it will go back to default.
+
+- I handled basic accessibility, but I did not add screen reader announcement for loading, error, or result count changes. For some users this can make the experience less clear.
